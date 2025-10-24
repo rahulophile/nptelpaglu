@@ -2,7 +2,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Header from '../components/layout/Header';
+
 import Footer from '../components/layout/Footer';
 import Card from '../components/ui/Card';
 
@@ -16,15 +16,15 @@ const HomePage = () => {
   };
 
   // Animation ke liye container variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
+  // const containerVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       staggerChildren: 0.15,
+  //     },
+  //   },
+  // };
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-background">

@@ -17,7 +17,7 @@ const ResultPage = () => {
 
   if (questions.length > 0) {
     Object.keys(answers).forEach((key) => {
-      const [weekStr, qidStr] = key.split("-");
+      const [ qidStr] = key.split("-");
       const qid = parseInt(qidStr, 10);
       const question = questions.find((q: Question) => q.id === qid);
       if (question && answers[key] === question.correctAnswerId) {
