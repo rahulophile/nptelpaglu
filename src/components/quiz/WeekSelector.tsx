@@ -1,6 +1,4 @@
-// src/components/quiz/WeekSelector.tsx
 import { useRef, useEffect } from "react";
-import { motion } from "framer-motion";
 
 type WeekSelectorProps = {
   totalWeeks: number;
@@ -11,13 +9,13 @@ type WeekSelectorProps = {
 const WeekSelector = ({ totalWeeks, selectedWeek, onSelectWeek }: WeekSelectorProps) => {
   const weeks = Array.from({ length: totalWeeks }, (_, i) => i + 1);
 
-  // 🔥 Store refs for each week item
+  // Store refs for each week item
   const weekRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // 🔥 Auto scroll to selected week
+  // Auto scroll to selected week
   useEffect(() => {
     const active = weekRefs.current[selectedWeek - 1];
-    if (active && active.scrollIntoView) {
+    if (active?.scrollIntoView) {
       active.scrollIntoView({
         behavior: "smooth",
         inline: "center",
@@ -37,7 +35,7 @@ const WeekSelector = ({ totalWeeks, selectedWeek, onSelectWeek }: WeekSelectorPr
         {weeks.map((week, index) => (
           <div
             key={week}
-            ref={(el) => (weekRefs.current[index] = el)}
+            ref={(el) => { weekRefs.current[index] = el; }} // ✅ void return
             onClick={() => onSelectWeek(week)}
             className="cursor-pointer"
           >
