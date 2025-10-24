@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@tailwind utilities;
+body {
+  background-color: #F9F7FF; 
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(304, 100%, 95%, 1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(240, 100%, 95%, 1) 0px, transparent 50%);
+  font-family: 'Poppins', sans-serif; /* Ek accha modern font (optional) */
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
