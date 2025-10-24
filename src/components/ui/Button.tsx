@@ -27,8 +27,17 @@ const Button = ({
     success: `bg-green-600 text-white hover:bg-green-700 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`,
   };
 
-  const IconComponent =
-    icon && React.isValidElement(icon) ? React.cloneElement(icon, { className: "h-5 w-5" }) : null;
+  const IconComponent = icon
+  ? React.cloneElement(
+      icon as React.ReactElement<{ className?: string }>, // ✅ assert that props may have className
+      {
+        className: `h-5 w-5 ${
+          (icon.props as { className?: string }).className || ""
+        }`,
+      }
+    )
+  : null;
+
 
   // ✅ Motion props type safe
   const motionProps: HTMLMotionProps<"button"> = {
