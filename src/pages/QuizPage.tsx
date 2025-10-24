@@ -5,12 +5,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
-import { cs113Quiz } from "../data/quizzes/cs113";
-import WeekSelector from "../components/quiz/WeekSelector";
-import QuestionDisplay from "../components/quiz/QuestionDisplay";
-import Button from "../components/ui/Button";
-import AnimatedNumber from "../components/ui/AnimatedNumber";
-import type { Question } from "../lib/types";
+import { cs113Quiz } from "../data/quizzes/cs113.js";
+import WeekSelector from "../components/quiz/WeekSelector.js";
+import QuestionDisplay from "../components/quiz/QuestionDisplay.js";
+import Button from "../components/ui/Button.js";
+import AnimatedNumber from "../components/ui/AnimatedNumber.js";
+import type { Question } from "../lib/types.js";
 
 const carouselVariants = {
   enter: (direction: number) => ({

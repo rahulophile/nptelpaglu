@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'; // motion import karein
-import type { Question, Option } from '../../lib/types';
-import AnswerOption from './AnswerOption';
+import type { Question, Option } from '../../lib/types.js';
+import AnswerOption from './AnswerOption.js';
 
 type QuestionDisplayProps = {
   question: Question;

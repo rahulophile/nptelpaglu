@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaHome, FaRedo } from "react-icons/fa";
-import Header from "../components/layout/Header";
-import Button from "../components/ui/Button";
-import type { Question } from "../lib/types";
+import Header from "../components/layout/Header.js";
+import Button from "../components/ui/Button.js";
+import type { Question } from "../lib/types.js";
 
 const ResultPage = () => {
   const navigate = useNavigate();

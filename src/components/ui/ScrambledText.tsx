@@ -1,6 +1,6 @@
 // src/components/ui/ScrambledText.tsx
 
-import { useScramble } from '../../hooks/useScramble';
+import { useScramble } from '../../hooks/useScramble.js';
 
 type ScrambledTextProps = {
   text: string;

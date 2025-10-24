@@ -3,8 +3,8 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-import Footer from '../components/layout/Footer';
-import Card from '../components/ui/Card';
+import Footer from '../components/layout/Footer.js';
+import Card from '../components/ui/Card.js';
 
 const HomePage = () => {
   const navigate = useNavigate();
