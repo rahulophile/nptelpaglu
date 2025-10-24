@@ -1,6 +1,6 @@
 // src/data/quizzes/cs113.ts
 
-import type { Quiz } from "../../lib/types";
+import type { Quiz } from "../../lib/types.js";
 
 export const cs113Quiz: Quiz = {
   subject: "CS113: Software Testing",
