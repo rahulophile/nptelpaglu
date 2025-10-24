@@ -1,4 +1,5 @@
-import { motion, HTMLMotionProps } from "framer-motion";
+import { motion } from "framer-motion";
+import type { HTMLMotionProps } from "framer-motion"; // ✅ type-only import
 import React from "react";
 
 interface ButtonProps extends HTMLMotionProps<"button"> {
@@ -29,13 +30,18 @@ const Button = ({
   const IconComponent =
     icon && React.isValidElement(icon) ? React.cloneElement(icon, { className: "h-5 w-5" }) : null;
 
+  // ✅ Motion props type safe
+  const motionProps: HTMLMotionProps<"button"> = {
+    whileHover: !disabled ? { y: -3, scale: 1.02 } : undefined,
+    whileTap: !disabled ? { scale: 0.98 } : undefined,
+  };
+
   return (
     <motion.button
       className={`${baseClasses} ${variantClasses[variant]} ${className}`}
       disabled={disabled}
-      whileHover={!disabled ? { y: -3, scale: 1.02 } : undefined}
-      whileTap={!disabled ? { scale: 0.98 } : undefined}
-      {...props} // Spread all native HTML & motion props
+      {...motionProps} // ✅ spread type-safe motion props
+      {...props} // ✅ spread native button props
     >
       {iconPosition === "left" && IconComponent}
       {children}
