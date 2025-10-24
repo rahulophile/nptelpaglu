@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "nodenext",  // ✅ Node16/nodenext for Vite + ESM
+    "module": "NodeNext",                 // ✅ fixed
+    "moduleResolution": "NodeNext",      // ✅ must match module
     "jsx": "react-jsx",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true, // ✅ skip library type check
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true, // ✅ React default import issue fix
-    "allowImportingTsExtensions": true,  // ✅ .tsx import allowed
+    "allowSyntheticDefaultImports": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "verbatimModuleSyntax": true
