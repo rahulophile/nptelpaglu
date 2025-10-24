@@ -1,8 +1,8 @@
 // src/App.tsx
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import QuizPage from './pages/QuizPage';
-import ResultPage from './pages/ResultPage';
+import HomePage from './pages/HomePage.js';
+import QuizPage from './pages/QuizPage.js';
+import ResultPage from './pages/ResultPage.js';
 
 function App() {
   return (
