@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "NodeNext",                 // ✅ fixed
-    "moduleResolution": "NodeNext",      // ✅ must match module
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "jsx": "react-jsx",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
