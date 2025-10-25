@@ -9,7 +9,7 @@ export const cs113Quiz: Quiz = {
       // ... Week 1 ka data yahan hai ...
       {
         id: 1,
-        text: "Choose the right option to fill in the blank: Suppose a method M1...",
+        text: "Choose the right option to fill in the blank: Suppose a method 𝑀1 calls a method, which in turn, calls another method 𝑀2 𝑀3. The level of testing that tests for the interface of calls from to and then to 𝑀1 𝑀2 𝑀3 is called as . . . . . . . . . . . ..",
         options: [
           { id: "a", text: "Functional testing." },
           { id: "b", text: "Unit testing." },
@@ -20,7 +20,7 @@ export const cs113Quiz: Quiz = {
       },
       {
         id: 2,
-        text: "State true or false: A coverage criterion C1 said to subsume another...",
+        text: "State true of false: A coverage criterion 𝐶1 said to subsume another coverage criterion 𝐶2 if there is at least one test case that satisfies 𝐶1 which also satisfies 𝐶2.",
         options: [
           { id: "a", text: "True." },
           { id: "b", text: "False." },
@@ -304,6 +304,7 @@ export const cs113Quiz: Quiz = {
       {
         id: 11,
         text: "State true or false: There are test paths that achieve node coverage but not edge coverage.",
+        image: "/images/cs113-week2-q10.png",
         options: [
           { id: "a", text: "True." },
           { id: "b", text: "False." },
@@ -313,6 +314,7 @@ export const cs113Quiz: Quiz = {
       {
         id: 12,
         text: "Which of the following test paths achieve edge coverage?",
+        image: "/images/cs113-week2-q10.png",
         options: [
           { id: "a", text: "Test path [1, 2, 3, 2, 4]." },
           { id: "b", text: "Test paths [1, 2, 4] and [1, 2, 3, 2]." },
@@ -327,6 +329,7 @@ export const cs113Quiz: Quiz = {
       {
         id: 13,
         text: "State yes or no: In the graph above, the test path [1, 2, 3, 2, 4] tours the pair of edges [3, 2, 3].",
+        image: "/images/cs113-week2-q10.png",
         options: [
           { id: "a", text: "Yes." },
           { id: "b", text: "No." },
@@ -336,6 +339,7 @@ export const cs113Quiz: Quiz = {
       {
         id: 14,
         text: "The test paths {[1, 2, 4], [1, 2, 3, 2, 3, 2, 4]} achieve which of the following coverage criteria?",
+        image: "/images/cs113-week2-q10.png",
         options: [
           { id: "a", text: "Node coverage only." },
           { id: "b", text: "Edge coverage only." },
@@ -347,6 +351,7 @@ export const cs113Quiz: Quiz = {
       {
         id: 15,
         text: "State true or false: The test path [1, 2, 3, 2, 4] achieves edge coverage.",
+        image: "/images/cs113-week2-q10.png",
         options: [
           { id: "a", text: "True." },
           { id: "b", text: "False." },
@@ -614,6 +619,7 @@ export const cs113Quiz: Quiz = {
   {
     id: 6,
     text: "Which of the following is true with reference to the graph satisfying the sequencing constraints?",
+    image: "/images/cs113-week4-q6.png",
     options: [
       { id: "a", text: "All the sequencing constraints are satisfied." },
       { id: "b", text: "Constraints (1) and (2) are satisfied but (3) and (4) are not." },
@@ -625,6 +631,7 @@ export const cs113Quiz: Quiz = {
   {
     id: 7,
     text: "State true or false: The path (1,4,5,7) satisfies constraint (4).",
+    image: "/images/cs113-week4-q6.png",
     options: [
       { id: "a", text: "True." },
       { id: "b", text: "False." },
@@ -634,6 +641,7 @@ export const cs113Quiz: Quiz = {
   {
     id: 8,
     text: "State true or false: The path (1,2,3,7) satisfies all the constraints.",
+    image: "/images/cs113-week4-q6.png",
     options: [
       { id: "a", text: "True." },
       { id: "b", text: "False." },
@@ -643,6 +651,7 @@ export const cs113Quiz: Quiz = {
   {
     id: 9,
     text: "State yes or no: Does the path (1,4,6,7) violate any of the constraints?",
+    image: "/images/cs113-week4-q6.png",
     options: [
       { id: "a", text: "Yes." },
       { id: "b", text: "No." },
@@ -652,6 +661,7 @@ export const cs113Quiz: Quiz = {
   {
     id: 10,
     text: "State true or false: The path (1,4,6,4,6,7) satisfies all the constraints.",
+    image: "/images/cs113-week4-q6.png",
     options: [
       { id: "a", text: "Yes." },
       { id: "b", text: "No." },
@@ -660,7 +670,7 @@ export const cs113Quiz: Quiz = {
   },
   // Week 4: Assignment 4 (Non-Graded)
   {
-    id: 1,
+    id: 11,
     text: "A node in a callee function that defines a variable x and has a def-clear path from the node through a call site to a caller function is referred to as _______.",
     options: [
       { id: "a", text: "Last-def of x." },
@@ -671,7 +681,7 @@ export const cs113Quiz: Quiz = {
     correctAnswerId: "a",
   },
   {
-    id: 2,
+    id: 12,
     text: "State true or false: Both top-down and bottom-up integration testing work well with a hierarchical design.",
     options: [
       { id: "a", text: "True." },
@@ -680,7 +690,7 @@ export const cs113Quiz: Quiz = {
     correctAnswerId: "a",
   },
   {
-    id: 3,
+    id: 13,
     text: "State true or false: Control flow graphs are finite state machines representing code.",
     options: [
       { id: "a", text: "True." },
@@ -689,7 +699,7 @@ export const cs113Quiz: Quiz = {
     correctAnswerId: "b",
   },
   {
-    id: 4,
+    id: 14,
     text: "Which of the following best describes pre-conditions in finite state machines?",
     options: [
       { id: "a", text: "They are conditions that must be true for transitions to be taken." },
@@ -772,10 +782,10 @@ export const cs113Quiz: Quiz = {
     options: [
       { id: "a", text: "{2, 3, 4} × {6, 7, 8}." },
       { id: "b", text: "{1, 3, 4} × {5, 6, 7}." },
-      { id: "c", text: "{2, 3, 4} × {6, 7, 8}." },
+      { id: "c", text: "{2, 3, 4} × {6, 7, 8,9}." },
       { id: "d", text: "{(2, 6), (3, 7), (4, 8)}." },
     ],
-    correctAnswerId: "d",
+    correctAnswerId: "1",
   },
   {
     id: 8,
@@ -843,6 +853,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 4,
   text: "State true or false: The internal variable z in the second predicate needs to be re-written in terms of the input parameters x and y.",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "True." },
     { id: "b", text: "False." },
@@ -852,6 +863,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 5,
   text: "Is it true that predicate coverage for the first predicate will also subsume predicate coverage for the second predicate?",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "True." },
     { id: "b", text: "False." },
@@ -861,6 +873,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 6,
   text: "How many test cases will be needed for clause coverage for the second predicate if we explicitly count the true and false values for each clause?",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "Two test cases." },
     { id: "b", text: "Four test cases." },
@@ -870,6 +883,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 7,
   text: "State true or false: The set of test case inputs {(x=5, y=3), (x=4, y=6), (x=5, y=6)} will satisfy clause coverage for the second predicate.",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "True." },
     { id: "b", text: "False." },
@@ -879,6 +893,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 8,
   text: "State yes or no: The set of test case inputs {(x=5, y=3), (x=4, y=6), (x=5, y=6)} will also satisfy predicate coverage for the first and second predicates.",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "Yes." },
     { id: "b", text: "No." },
@@ -888,6 +903,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 9,
   text: "How many test cases are needed for satisfying RACC for all the clauses for the second predicate?",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "Only one test case." },
     { id: "b", text: "Two test cases." },
@@ -899,6 +915,7 @@ export const cs113Quiz: Quiz = {
 {
   id: 10,
   text: "State true or false: The set of test case inputs {(x=5, y=3), (x=4, y=6), (x=5, y=6)} satisfy RACC for the second predicate.",
+  image: "/images/cs113-week5-q4.png",
   options: [
     { id: "a", text: "True." },
     { id: "b", text: "False." },
