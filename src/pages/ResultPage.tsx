@@ -1,3 +1,4 @@
+// src/pages/ResultPage.tsx
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaHome, FaRedo } from "react-icons/fa";
@@ -9,19 +10,40 @@ const ResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Answers and questions passed from QuizPage
-  const { answers, questions } = location.state || { answers: {}, questions: [] };
+  // 👇 state से subjectId को भी निकालें
+  const { answers, questions, subjectId } = location.state || { 
+    answers: {}, 
+    questions: [],
+    subjectId: 'cs113' // Fallback, agar state na mile
+  };
 
-  // ✅ Corrected score calculation — supports "week-questionId" keys
+  // ✅ बेहतर स्कोर कैलकुलेशन जो मल्टी-आंसर को भी सपोर्ट करता है
   let score = 0;
-
   if (questions.length > 0) {
     Object.keys(answers).forEach((key) => {
-      const [ qidStr] = key.split("-");
-      const qid = parseInt(qidStr, 10);
-      const question = questions.find((q: Question) => q.id === qid);
-      if (question && answers[key] === question.correctAnswerId) {
-        score++;
+      const [weekStr, qidStr] = key.split("-");
+      const questionId = parseInt(qidStr, 10);
+      
+      const question = questions.find((q: Question) => q.id === questionId);
+      if (!question) return;
+
+      const correctAnswer = question.correctAnswerId;
+      const userAnswer = answers[key];
+
+      if (Array.isArray(correctAnswer)) {
+        // मल्टी-आंसर सवाल: दोनों ऐरे बराबर होने चाहिए
+        if (Array.isArray(userAnswer) && userAnswer.length === correctAnswer.length) {
+          const sortedUserAnswer = [...userAnswer].sort();
+          const sortedCorrectAnswer = [...correctAnswer].sort();
+          if (JSON.stringify(sortedUserAnswer) === JSON.stringify(sortedCorrectAnswer)) {
+            score++;
+          }
+        }
+      } else {
+        // सिंगल-आंसर सवाल
+        if (userAnswer === correctAnswer) {
+          score++;
+        }
       }
     });
   }
@@ -36,13 +58,14 @@ const ResultPage = () => {
     return "You can do better. Don't give up!";
   };
 
-  const subjectId = "cs113"; // 👈 change if needed
+  // ❌ हार्डकोड की हुई लाइन हटा दी गई है
 
   return (
     <div className="min-h-screen bg-brand-background flex flex-col">
       <Header
         title="Quiz Result"
         showBackButton={true}
+        // 👇 अब यह डायनामिक subjectId का इस्तेमाल करेगा
         onBack={() => navigate(`/quiz/${subjectId}`)}
       />
 
@@ -69,6 +92,7 @@ const ResultPage = () => {
           <Button
             className="w-full sm:w-auto"
             variant="secondary"
+            // 👇 अब यह डायनामिक subjectId का इस्तेमाल करेगा
             onClick={() => navigate(`/quiz/${subjectId}`)}
           >
             <FaRedo className="h-4 w-4" /> Try Again

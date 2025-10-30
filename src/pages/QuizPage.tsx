@@ -6,6 +6,7 @@ import { useSwipeable } from "react-swipeable";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 import { cs113Quiz } from "../data/quizzes/cs113.js";
+import { cs142Quiz } from "../data/quizzes/cs142.js";
 import WeekSelector from "../components/quiz/WeekSelector.js";
 import QuestionDisplay from "../components/quiz/QuestionDisplay.js";
 import Button from "../components/ui/Button.js";
@@ -29,6 +30,7 @@ const carouselVariants = {
 
 const quizzesData: { [key: string]: { [week: number]: Question[] } } = {
   cs113: cs113Quiz.weeks,
+  cs142: cs142Quiz.weeks,
 };
 
 const QuizPage = () => {
@@ -38,22 +40,23 @@ const QuizPage = () => {
   const [currentWeek, setCurrentWeek] = useState(1);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  // answers stored as { "weekId-questionId": "optionId" }
-  const [answers, setAnswers] = useState<{ [key: string]: string | null }>({});
+  const [answers, setAnswers] = useState<{ [key: string]: string | string[] | null }>({});
   const [direction, setDirection] = useState(1);
-
   const quizWeeks = subjectId ? quizzesData[subjectId] : undefined;
 
   useEffect(() => {
+    if (!subjectId || !quizzesData[subjectId]) {
+      navigate('/');
+      return;
+    }
     const weekQuestions = quizWeeks ? quizWeeks[currentWeek] || [] : [];
     setQuestions(weekQuestions);
 
     if (direction === 1) setCurrentQuestionIndex(0);
-    else if (direction === -1) setCurrentQuestionIndex(weekQuestions.length - 1);
-  }, [currentWeek, subjectId]);
+    else if (direction === -1)
+      setCurrentQuestionIndex(weekQuestions.length - 1);
+  }, [currentWeek, subjectId, direction, quizWeeks, navigate]);
 
-  // 🔥 reset answers when week changes
   useEffect(() => {
     setAnswers({});
     setCurrentQuestionIndex(0);
@@ -61,8 +64,6 @@ const QuizPage = () => {
 
   const totalQuestions = questions.length;
   const currentQuestion = questions[currentQuestionIndex];
-
-  // use composite key (week + question id)
   const questionKey = currentQuestion ? `${currentWeek}-${currentQuestion.id}` : "";
   const selectedOptionId = currentQuestion ? answers[questionKey] || null : null;
 
@@ -75,11 +76,22 @@ const QuizPage = () => {
   const handleOptionSelect = (optionId: string) => {
     if (!currentQuestion) return;
     const key = `${currentWeek}-${currentQuestion.id}`;
-    if (answers[key]) return; // prevent reattempt
-    setAnswers((prev) => ({
-      ...prev,
-      [key]: optionId,
-    }));
+    if (answers[key] && currentQuestion.questionType !== 'multiple-answer') return;
+    setAnswers((prev) => {
+      const newAnswers = { ...prev };
+      const currentAnswer = newAnswers[key];
+      if (currentQuestion.questionType === 'multiple-answer') {
+        const currentSelection = (Array.isArray(currentAnswer) ? currentAnswer : []) as string[];
+        if (currentSelection.includes(optionId)) {
+          newAnswers[key] = currentSelection.filter((id) => id !== optionId);
+        } else {
+          newAnswers[key] = [...currentSelection, optionId];
+        }
+      } else {
+        newAnswers[key] = optionId;
+      }
+      return newAnswers;
+    });
   };
 
   const handleNextQuestion = () => {
@@ -89,11 +101,21 @@ const QuizPage = () => {
     if (!isLastQuestionInWeek) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      if (currentWeek < 12) {
+      const maxWeek = quizWeeks ? Math.max(...Object.keys(quizWeeks).map(Number)) : 0;
+      if (currentWeek < maxWeek) {
         setCurrentWeek(currentWeek + 1);
       } else {
         const allQuestions = Object.values(quizWeeks || {}).flat();
-        navigate("/result", { state: { answers, questions: allQuestions } });
+        
+        // 👇 *** मुख्य बदलाव यहाँ है ***
+        // अब हम subjectId को भी ResultPage पर भेज रहे हैं
+        navigate("/result", { 
+            state: { 
+                answers, 
+                questions: allQuestions,
+                subjectId: subjectId 
+            } 
+        });
       }
     }
   };
@@ -101,7 +123,6 @@ const QuizPage = () => {
   const handlePreviousQuestion = () => {
     setDirection(-1);
     const isFirstQuestionInWeek = currentQuestionIndex === 0;
-
     if (!isFirstQuestionInWeek) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     } else {
@@ -119,47 +140,38 @@ const QuizPage = () => {
     preventScrollOnSwipe: true,
   });
 
-  const isLastQuestionOverall =
-    currentWeek === 12 && currentQuestionIndex === totalQuestions - 1;
-
+  const maxWeek = quizWeeks ? Math.max(...Object.keys(quizWeeks).map(Number)) : 0;
+  const isLastQuestionOverall = currentWeek === maxWeek && currentQuestionIndex === totalQuestions - 1;
   let nextButtonText = "Next";
   if (currentQuestionIndex === totalQuestions - 1) {
-    if (currentWeek < 12) nextButtonText = `Week ${currentWeek + 1}`;
+    if (currentWeek < maxWeek) nextButtonText = `Week ${currentWeek + 1}`;
     else nextButtonText = "Finish Quiz";
   }
+  const isAnswerSubmitted = Array.isArray(selectedOptionId) ? selectedOptionId.length > 0 : !!selectedOptionId;
 
   return (
     <div className="h-dvh w-screen flex flex-col bg-brand-background" {...handlers}>
       <header className="flex-shrink-0 z-20">
         <WeekSelector
-          totalWeeks={12}
+          totalWeeks={maxWeek}
           selectedWeek={currentWeek}
           onSelectWeek={handleWeekSelect}
         />
         <div className="w-full bg-gray-200 h-1.5">
           <motion.div
             className="bg-purple-600 h-1.5"
-            animate={{
-              width: `${
-                totalQuestions > 0
-                  ? ((currentQuestionIndex + 1) / totalQuestions) * 100
-                  : 0
-              }%`,
-            }}
+            animate={{ width: `${totalQuestions > 0 ? ((currentQuestionIndex + 1) / totalQuestions) * 100 : 0}%` }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           />
         </div>
         {totalQuestions > 0 && (
           <div className="w-full max-w-3xl mx-auto px-4 pt-4">
             <p className="text-brand-light-text font-semibold text-left sm:text-center">
-              Question{" "}
-              <AnimatedNumber number={currentQuestion ? currentQuestion.id : 1} /> of{" "}
-              {totalQuestions}
+              Question <AnimatedNumber number={currentQuestionIndex + 1} /> of {totalQuestions}
             </p>
           </div>
         )}
       </header>
-
       <main className="flex-grow overflow-y-auto">
         <div className="w-full max-w-3xl mx-auto px-4 pt-4 pb-8">
           <div className="relative h-[500px]" style={{ perspective: "1200px" }}>
@@ -179,13 +191,11 @@ const QuizPage = () => {
                     question={currentQuestion}
                     selectedOptionId={selectedOptionId}
                     onOptionSelect={handleOptionSelect}
-                    isAnswerSubmitted={!!selectedOptionId}
+                    isAnswerSubmitted={isAnswerSubmitted}
                   />
                 ) : (
                   <div className="text-center text-gray-500 pt-20">
-                    <h2 className="text-2xl font-bold">
-                      No questions available for this week yet.
-                    </h2>
+                    <h2 className="text-2xl font-bold">No questions available for this week yet.</h2>
                     <p>Please select another week.</p>
                   </div>
                 )}
@@ -194,7 +204,6 @@ const QuizPage = () => {
           </div>
         </div>
       </main>
-
       {totalQuestions > 0 && (
         <footer className="flex-shrink-0 bg-white/80 backdrop-blur-sm border-t-2 border-gray-200 z-30">
           <div className="w-full max-w-3xl mx-auto p-4 flex justify-between items-center gap-3">

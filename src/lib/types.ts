@@ -9,8 +9,17 @@ export type Question = {
   id: number;
   text: string;
   options: Option[];
-  correctAnswerId: string;
-  image?: string; // YEH NAYI LINE HAI - '?' ka matlab hai ki yeh optional hai
+  
+  // 👇 मुख्य बदलाव: अब यह एक स्ट्रिंग या स्ट्रिंग का ऐरे हो सकता है
+  correctAnswerId: string | string[]; 
+  
+  image?: string; 
+  
+  // 👇 नया जोड़ा गया: यह सवाल का प्रकार बताएगा
+  questionType?: 'single-answer' | 'multiple-answer';
+  
+  // 👇 नया जोड़ा गया: मल्टी-आंसर सवालों के लिए एक नोट
+  note?: string; 
 };
 
 export type Quiz = {
