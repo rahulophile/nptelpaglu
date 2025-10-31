@@ -1,5 +1,5 @@
 // src/pages/QuizPage.tsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
@@ -44,6 +44,9 @@ const QuizPage = () => {
   const [direction, setDirection] = useState(1);
   const quizWeeks = subjectId ? quizzesData[subjectId] : undefined;
 
+  // 👇 *** मुख्य बदलाव यहाँ है ***
+  // मैंने `direction` को इस useEffect की dependency array से हटा दिया है।
+  // अब यह सिर्फ तभी चलेगा जब हफ्ता बदलेगा, जिससे Next/Previous बटन सही काम करेंगे।
   useEffect(() => {
     if (!subjectId || !quizzesData[subjectId]) {
       navigate('/');
@@ -52,14 +55,20 @@ const QuizPage = () => {
     const weekQuestions = quizWeeks ? quizWeeks[currentWeek] || [] : [];
     setQuestions(weekQuestions);
 
-    if (direction === 1) setCurrentQuestionIndex(0);
-    else if (direction === -1)
-      setCurrentQuestionIndex(weekQuestions.length - 1);
-  }, [currentWeek, subjectId, direction, quizWeeks, navigate]);
+    // यह लॉजिक अब सिर्फ हफ्ता बदलने पर ही index को 0 या आखिर में सेट करेगा।
+    if (direction === 1) {
+      setCurrentQuestionIndex(0);
+    } else if (direction === -1) {
+      setCurrentQuestionIndex(weekQuestions.length > 0 ? weekQuestions.length - 1 : 0);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWeek, subjectId, quizWeeks, navigate]); 
+  // 👆 Dependency array से `direction` हटा दिया गया है।
 
+  // यह दूसरा useEffect सिर्फ जवाबों को रीसेट करने के लिए है जब हफ्ता बदलता है।
+  // इसे अलग रखना अच्छा अभ्यास है।
   useEffect(() => {
     setAnswers({});
-    setCurrentQuestionIndex(0);
   }, [currentWeek]);
 
   const totalQuestions = questions.length;
@@ -68,9 +77,14 @@ const QuizPage = () => {
   const selectedOptionId = currentQuestion ? answers[questionKey] || null : null;
 
   const handleWeekSelect = (week: number) => {
-    if (week > currentWeek) setDirection(1);
-    else setDirection(-1);
-    if (week !== currentWeek) setCurrentWeek(week);
+    if (week > currentWeek) {
+      setDirection(1);
+    } else if (week < currentWeek) {
+      setDirection(-1);
+    }
+    if (week !== currentWeek) {
+      setCurrentWeek(week);
+    }
   };
 
   const handleOptionSelect = (optionId: string) => {
@@ -94,9 +108,9 @@ const QuizPage = () => {
     });
   };
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = useCallback(() => {
     setDirection(1);
-    const isLastQuestionInWeek = currentQuestionIndex === totalQuestions - 1;
+    const isLastQuestionInWeek = currentQuestionIndex === questions.length - 1;
 
     if (!isLastQuestionInWeek) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -106,23 +120,21 @@ const QuizPage = () => {
         setCurrentWeek(currentWeek + 1);
       } else {
         const allQuestions = Object.values(quizWeeks || {}).flat();
-        
-        // 👇 *** मुख्य बदलाव यहाँ है ***
-        // अब हम subjectId को भी ResultPage पर भेज रहे हैं
         navigate("/result", { 
-            state: { 
-                answers, 
-                questions: allQuestions,
-                subjectId: subjectId 
-            } 
+          state: { 
+            answers, 
+            questions: allQuestions,
+            subjectId: subjectId 
+          } 
         });
       }
     }
-  };
+  }, [currentQuestionIndex, questions.length, quizWeeks, currentWeek, navigate, answers, subjectId]);
 
-  const handlePreviousQuestion = () => {
+  const handlePreviousQuestion = useCallback(() => {
     setDirection(-1);
     const isFirstQuestionInWeek = currentQuestionIndex === 0;
+
     if (!isFirstQuestionInWeek) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     } else {
@@ -130,7 +142,7 @@ const QuizPage = () => {
         setCurrentWeek(currentWeek - 1);
       }
     }
-  };
+  }, [currentQuestionIndex, currentWeek]);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => handleNextQuestion(),
@@ -144,7 +156,7 @@ const QuizPage = () => {
   const isLastQuestionOverall = currentWeek === maxWeek && currentQuestionIndex === totalQuestions - 1;
   let nextButtonText = "Next";
   if (currentQuestionIndex === totalQuestions - 1) {
-    if (currentWeek < maxWeek) nextButtonText = `Week ${currentWeek + 1}`;
+    if (currentWeek < maxWeek) nextButtonText = `Go to Week ${currentWeek + 1}`;
     else nextButtonText = "Finish Quiz";
   }
   const isAnswerSubmitted = Array.isArray(selectedOptionId) ? selectedOptionId.length > 0 : !!selectedOptionId;
